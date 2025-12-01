@@ -8,9 +8,15 @@ class Hash_Table_CM(ht.Hash_Table): # CM -> Chain Method
         super().__init__(size)
 
         self.hash_table = [[] for _ in range(self.size)]
-    
+
+    def get(self, key):
+        pass
+
+    def delete(self, key):
+        pass
+
     # Добавление новой записи
-    def add(self, key, value) -> None:
+    def add(self, key) -> None:
         key = key.lower()
         key_hash = self.get_hash(key)
         chain = self.hash_table[key_hash]
@@ -22,56 +28,68 @@ class Hash_Table_CM(ht.Hash_Table): # CM -> Chain Method
             
         chain.append((key, 1))
 
+    def __str__(self):
+        output = []
+        output.append("Содержимое хеш-таблицы (Метод Цепочек)")
+
+        for i, chain in enumerate(self.hash_table):
+            if chain:
+                # Форматирование цепочки: 'слово': счетчик; 'слово2': счетчик
+                chain_str = "; ".join([f"'{word}': {count}" for word, count in chain])
+                output.append(f"Бакет {i:02}: {chain_str}")
+
+        return "\n".join(output)
 
 
-def process_file_and_populate_hash_table(file_path, hash_table):
+def process_file(file_path, hash_table):
+    """Считывает файл, очищает его от пунктуации и заполняет хеш-таблицу"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             text = f.read()
-            
-            # 1. Приводим к нижнему регистру
+
+            # Приводим текст к нижнему регистру
             text_lower = text.lower()
-            
-            # 2. Очищаем текст от переносов строки и прочих пробельных символов 
-            # и разбиваем на слова по пробелам
+
+            # Разбиваем на слова (по пробельным символам)
             words = text_lower.split()
-            
+
             for word in words:
-                # 3. Удаляем знаки препинания в начале и конце каждого слова
+                # Очищаем каждое слово от знаков препинания в начале и конце
                 cleaned_word = word.strip(string.punctuation)
-                
-                if cleaned_word: 
-                    hash_table.put(cleaned_word)
-                    
+
+                # Добавляем слово в хеш-таблицу, если оно не пустое
+                if cleaned_word:
+                    hash_table.add(cleaned_word)
+
         print(f"Файл '{file_path}' успешно обработан.")
-        
+        return True
+
     except FileNotFoundError:
-        print(f"Ошибка: Файл по пути '{file_path}' не найден.")
+        print(f"Ошибка: Входной файл по пути '{file_path}' не найден. Пожалуйста, создайте его.")
+        return False
+    except Exception as e:
+        print(f"Произошла ошибка при обработке файла: {e}")
+        return False
 
-# --- УПРОЩЕННЫЙ БЛОК ВЫПОЛНЕНИЯ И ЗАПИСИ ---
-def main():
-    TEST_FILE_PATH = "input.txt"
-    RESULT_FILE_PATH = "output.txt"
-    
-    # Создание тестового файла (упрощенный блок)
-    sample_text = """
-    Раз, два, три. Коллизии, коллизии, коллизии. 
-    Банан, Яблоко, Арбуз. Раз-два-три.
-    """
-    with open(TEST_FILE_PATH, 'w', encoding='utf-8') as f:
-        f.write(sample_text)
-        
-    # Инициализация и заполнение
-    my_hash_table = Hash_Table_CM(size=7)
-    process_file_and_populate_hash_table(TEST_FILE_PATH, my_hash_table)
 
+# Имя файла, который нужно прочитать. Убедитесь, что он существует!
+INPUT_FILE_PATH = "input.txt"
+RESULT_FILE_PATH = "output_cm.txt"
+
+# Инициализация и заполнение
+my_hash_table = Hash_Table_CM(size=30)
+
+# Процесс считывания файла
+if process_file(INPUT_FILE_PATH, my_hash_table):
     # Вывод результата
     result_output = str(my_hash_table)
-    print("\n--- Вывод в Консоль ---")
+    print("Результат (Консольный вывод):")
     print(result_output)
 
     # Запись в файл
     with open(RESULT_FILE_PATH, 'w', encoding='utf-8') as f:
         f.write(result_output)
 
-    print(f"\nРезультат записан в файл: '{RESULT_FILE_PATH}'")
+    print(f"Результат работы хеш-таблицы записан в файл: '{RESULT_FILE_PATH}'")
+            
+
