@@ -1,24 +1,5 @@
 # №8 Поразрядная
 
-'''
-def bucketsort(array):
-    out = []
-
-    # Создаем список "вёдер" для распределения по числам от 0 до 9
-    buckets = [[] for _ in range(10)]
-
-    # Распределяем числа по "вёдрам"
-    for item in array:
-        buckets[item].append(item)
-
-    # Опустошаем "вёдра"
-    for bucket in buckets:
-        for item in bucket:
-            out.append(item)
-    
-    return out
-'''
-
 def bucket_sort_by_digit(array, exponent):
     out = []
     buckets = [[] for _ in range(10)]

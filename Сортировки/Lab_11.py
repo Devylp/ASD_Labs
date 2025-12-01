@@ -1,6 +1,6 @@
 # №11 Быстрая сортировка
 
-list = [2, -1, 8, 0, 7] # len(list) = 5 -> pivot = list[2] = 8
+list = [2, -1, 8, 0, 7, 76, 1, 0 -23]
 
 
 def quick_sort(array):
