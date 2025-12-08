@@ -98,8 +98,8 @@ def process_file(file_path, hash_table):
 INPUT_FILE_PATH = "input.txt"
 RESULT_FILE_PATH = "output_oa.txt"
 
-# Инициализация и заполнение
-my_hash_table = Hash_Table_OA(15)  # Небольшой размер, чтобы увидеть коллизии
+
+my_hash_table = Hash_Table_OA(15)
 
 # Процесс считывания файла
 if process_file(INPUT_FILE_PATH, my_hash_table):
