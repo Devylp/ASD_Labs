@@ -44,19 +44,45 @@ class Hash_Table_OA(ht.Hash_Table): # OA -> Open Addressing
         return "\n".join(output)
 
 
+
+def get_node_tokens(expression):
+    tokens = []
+    i = 0
+    while i < len(expression):
+        symbol = expression[i]
+
+        if symbol.isdigit():
+            num_str = ''
+            while i < len(expression) and expression[i].isdigit():
+                num_str += expression[i]
+                i += 1
+
+            tokens.append(num_str)
+
+        elif symbol in "()":  # Оставляем только скобки для структуры
+            tokens.append(symbol)
+            i += 1
+
+        # Удаляем "elif symbol == '=': break"
+
+        else:  # Обработка пробелов, запятых или других символов - просто пропускаем
+            i += 1
+
+    return tokens
+
 def process_file(file_path, hash_table):
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            text = f.read()
+            expression = f.read()
 
-            text_lower = text.lower()
-            words = text_lower.split()
+            # 1. Токенизация с помощью функции ОПН
+            tokens = get_node_tokens(expression)
 
-            for word in words:
-                cleaned_word = word.strip(string.punctuation)
-
-                if cleaned_word:
-                    hash_table.add(cleaned_word)
+            # 2. Обработка токенов и заполнение хеш-таблицы
+            for token in tokens:
+                # Добавляем только числовые узлы (состоящие только из цифр)
+                if token.isdigit():
+                    hash_table.add(token)
 
         print(f"Файл '{file_path}' успешно обработан.")
         return True
@@ -69,20 +95,16 @@ def process_file(file_path, hash_table):
         return False
 
 
-
-# Имя файла, который нужно прочитать. Убедитесь, что он существует!
 INPUT_FILE_PATH = "input.txt"
 RESULT_FILE_PATH = "output_oa.txt"
 
 # Инициализация и заполнение
-my_hash_table = Hash_Table_OA(size=30)  # Уменьшим размер для наглядности коллизий
+my_hash_table = Hash_Table_OA(15)  # Небольшой размер, чтобы увидеть коллизии
 
 # Процесс считывания файла
 if process_file(INPUT_FILE_PATH, my_hash_table):
-    # Вывод результата
     result_output = str(my_hash_table)
-
-    print("Результат (Консольный вывод):")
+    print("Результат:")
     print(result_output)
 
     # Запись в файл

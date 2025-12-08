@@ -7,7 +7,7 @@ class Hash_Table(ABC):
 
 
     def get_hash(self, key) -> int:
-        return sum(ord(char) for char in str(key)) % self.size 
+        return sum(ord(char) for char in str(key)) % self.size
     
     @abstractmethod
     def add(self, key, value) -> None:

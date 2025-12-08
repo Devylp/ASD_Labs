@@ -41,25 +41,44 @@ class Hash_Table_CM(ht.Hash_Table): # CM -> Chain Method
         return "\n".join(output)
 
 
+def get_node_tokens(expression):
+    tokens = []
+    i = 0
+    while i < len(expression):
+        symbol = expression[i]
+
+        if symbol.isdigit():
+            num_str = ''
+            while i < len(expression) and expression[i].isdigit():
+                num_str += expression[i]
+                i += 1
+
+            tokens.append(num_str)
+
+        elif symbol in "()":  # Оставляем только скобки для структуры
+            tokens.append(symbol)
+            i += 1
+
+        # Удаляем "elif symbol == '=': break"
+
+        else:  # Обработка пробелов, запятых или других символов - просто пропускаем
+            i += 1
+
+    return tokens
+
 def process_file(file_path, hash_table):
-    """Считывает файл, очищает его от пунктуации и заполняет хеш-таблицу"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            text = f.read()
+            expression = f.read()
 
-            # Приводим текст к нижнему регистру
-            text_lower = text.lower()
+            # 1. Токенизация с помощью функции ОПН
+            tokens = get_node_tokens(expression)
 
-            # Разбиваем на слова (по пробельным символам)
-            words = text_lower.split()
-
-            for word in words:
-                # Очищаем каждое слово от знаков препинания в начале и конце
-                cleaned_word = word.strip(string.punctuation)
-
-                # Добавляем слово в хеш-таблицу, если оно не пустое
-                if cleaned_word:
-                    hash_table.add(cleaned_word)
+            # 2. Обработка токенов и заполнение хеш-таблицы
+            for token in tokens:
+                # Добавляем только числовые узлы (состоящие только из цифр)
+                if token.isdigit():
+                    hash_table.add(token)
 
         print(f"Файл '{file_path}' успешно обработан.")
         return True
@@ -72,18 +91,16 @@ def process_file(file_path, hash_table):
         return False
 
 
-# Имя файла, который нужно прочитать. Убедитесь, что он существует!
 INPUT_FILE_PATH = "input.txt"
 RESULT_FILE_PATH = "output_cm.txt"
 
 # Инициализация и заполнение
-my_hash_table = Hash_Table_CM(size=30)
+my_hash_table = Hash_Table_CM(15)  # Небольшой размер, чтобы увидеть коллизии
 
 # Процесс считывания файла
 if process_file(INPUT_FILE_PATH, my_hash_table):
-    # Вывод результата
     result_output = str(my_hash_table)
-    print("Результат (Консольный вывод):")
+    print("Результат:")
     print(result_output)
 
     # Запись в файл
@@ -91,5 +108,3 @@ if process_file(INPUT_FILE_PATH, my_hash_table):
         f.write(result_output)
 
     print(f"Результат работы хеш-таблицы записан в файл: '{RESULT_FILE_PATH}'")
-            
-
