@@ -5,6 +5,8 @@
 После выполнения операции программа должна возвращаться снова в меню.
 При выходе их него до завершения программы на экран должно быть выведено
 БДН любым способом (в виде линейно-скобочной записи или в графической форме).
+
+Пример: 8 (3 (1, 6 (4,7)), 10 (, 14(13,)))
 '''
 
 class Node:
@@ -12,6 +14,15 @@ class Node:
         self.value = value
         self.left = None
         self.right = None
+
+    def search(self):
+        pass
+
+    def add(self):
+        pass
+
+    def delete(self):
+        pass
 
 def get_node_tokens(expression):
     tokens = []
@@ -27,15 +38,17 @@ def get_node_tokens(expression):
 
             tokens.append(num_str)
 
-        elif symbol in "()":  # Оставляем только скобки для структуры
-            tokens.append(symbol)
+        elif symbol in "()":
             i += 1
 
-        # Удаляем "elif symbol == '=': break"
-
-        else:  # Обработка пробелов, запятых или других символов - просто пропускаем
+        else:
             i += 1
 
     return tokens
 
-input_tree = input()
+def display_menu() -> None:
+    pass
+
+#print(get_node_tokens("8 (3 (1, 6 (4,7)), 10 (, 14(13,)))"))
+# -> ['8', '3', '1', '6', '4', '7', '10', '14', '13'] без tokens.append(symbol)
+# -> ['8', '(', '3', '(', '1', '6', '(', '4', '7', ')', ')', '10', '(', '14', '(', '13', ')', ')', ')'] с tokens.append(symbol)
