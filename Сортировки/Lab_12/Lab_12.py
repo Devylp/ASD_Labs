@@ -58,7 +58,7 @@ def external_multiway_merge_sort(input_, output_, size=5) -> None:
 
 
 
-input_file = 'input.txt'
+input_file = 'input_txt'
 output_file = 'sorted_result.txt'
 
 external_multiway_merge_sort(input_file, output_file, size=5)
