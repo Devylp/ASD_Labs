@@ -2,8 +2,8 @@
 A. Крош и строка
 '''
 
-n = int(input("Введите длину входной строки (n): ").strip())
-input_string = input("Введите входную строку: ").strip()
+n = int(input("").strip())
+input_string = input("").strip()
 result_arr = [] # массив для хранения предыдущих значении input_string (на основе стека)
 
 top = -1 # значение -1 указывает на пустоту result_arr
